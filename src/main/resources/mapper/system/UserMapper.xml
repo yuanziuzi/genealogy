@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tonglu.genealogy.system.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="UserMap" type="User">
+        <id     column="user_id"        property="userId"       />
+        <result column="version"        property="version"      />
+        <result column="delete_flag"    property="deleteFlag"   />
+        <result column="create_by"      property="createBy"     />
+        <result column="create_time"    property="createTime"   />
+        <result column="update_by"      property="updateBy"     />
+        <result column="update_time"    property="updateTime"   />
+        <result column="phone"          property="phone"        />
+        <result column="password"       property="password"     />
+        <result column="nick_name"      property="nickName"     />
+        <result column="sex"            property="sex"          />
+        <result column="email"          property="email"        />
+        <result column="real_name"      property="realName"     />
+        <result column="id"             property="id"           />
+        <result column="status"         property="status"       />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="UserVO">
+        <include refid="UserNoPasswordVO"/>
+        , `password`
+    </sql>
+    <sql id="UserNoPasswordVO">
+        version, delete_flag, create_by, create_time, update_by, update_time,
+        user_id, phone, nick_name, sex, email, real_name, id, `status`
+    </sql>
+
+    <select id="checkPhoneUnique" parameterType="User" resultMap="UserMap">
+        SELECT
+        <include refid="UserVO"/>
+        FROM sys_user
+        <where>
+            phone = #{phone}
+        </where>
+    </select>
+
+    <select id="listUsers" parameterType="User" resultMap="UserMap">
+        SELECT
+        <include refid="UserNoPasswordVO"/>
+        FROM sys_user
+        <where>
+            delete_flag = 0
+            <if test="user.phone != null and user.phone != ''">
+                AND phone = #{user.phone}
+            </if>
+            <if test="user.nickName != null and user.nickName != ''">
+                AND nick_name LIKE CONCAT('%', #{user.nickName}, '%')
+            </if>
+            <if test="user.sex != null">
+                AND sex = #{user.sex}
+            </if>
+            <if test="user.email != null and user.email != ''">
+                AND email = #{user.email}
+            </if>
+            <if test="user.realName != null and user.realName != ''">
+                AND real_name LIKE CONCAT('%', #{user.realName}, '%')
+            </if>
+            <if test="user.id != null and user.id != ''">
+                AND id = #{user.id}
+            </if>
+            <if test="user.status != null">
+                AND `status` = #{user.status}
+            </if>
+        </where>
+        ORDER BY
+            update_time DESC
+    </select>
+
+</mapper>

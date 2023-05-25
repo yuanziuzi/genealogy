@@ -1,0 +1,15 @@
+wheel:
+  # 文件路径
+  profile: /var/wheel/upload
+
+spring:
+  datasource:
+    # 数据库驱动
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # 连接地址 使用unicode编码 使用安全连接 使用utf8编码 服务器时间亚洲上海 时间格式0值处理
+      url: jdbc:mysql://127.0.0.1:3306/wheel?useUnicode=true&useSSL=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+      # 用户名
+      username: wheel
+      # 密码
+      password: wheel

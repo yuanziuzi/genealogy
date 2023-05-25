@@ -1,0 +1,80 @@
+# 自定义配置
+genealogy:
+  name: ${spring.application.name}
+  version: 1.0.0
+
+server:
+  # 服务端口
+  port: 8080
+  servlet:
+    # 应用的访问路径
+    context-path: /
+
+spring:
+  profiles:
+    # 启用的配置文件
+    active: dev
+  application:
+    # 应用名称
+    name: genealogy
+  mvc:
+    # 路径匹配
+    pathmatch:
+      # 匹配策略
+      matching-strategy: ant_path_matcher
+
+mybatis-plus:
+  # mapper.xml文件位置
+  mapper-locations: classpath:mapper/**/*Mapper.xml
+  # 别名包扫描路径
+  type-aliases-package: com.tonglu.genealogy.**.entity
+  configuration:
+    # 指定 mybatis 执行器
+    default-executor-type: reuse
+    # 允许 JDBC 支持自动生成主键
+    use-generated-keys: true
+    # 开启自动驼峰命名规则
+    map-underscore-to-camel-case: true
+    # 开启 Mybatis 二级缓存
+    cache-enabled: true
+    # slf4j 打印sql日志
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    # 关闭 mybatis-plus 启动 banner 图
+    banner: false
+    db-config:
+      # 逻辑删除字段
+      logic-delete-field: deleteFlag
+      # 逻辑已删除值
+      logic-delete-value: true
+      # 逻辑未删除值
+      logic-not-delete-value: false
+
+logging:
+  charset:
+    # 日志文件编码格式
+    file: utf-8
+  # 配置不同包下日志级别
+  level:
+    com.tonglu.genealogy: debug
+    org.springframework: warn
+
+swagger:
+  # 标题
+  title: 族谱-API文档
+  # 描述
+  description: 族谱-API文档
+  # 接口文档版本
+  version: ${genealogy.version}
+  # 服务条款
+  project-url: https://github.com/yuanziuzi/genealogy.git
+  # 联系人
+  author: yuanzi
+  # 联系人URL
+  author-blog: x
+  # 联系人邮箱
+  author-email: x
+  # 许可证
+  licence: x
+  # 许可证文件
+  licence-url: x

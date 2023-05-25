@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tonglu.genealogy.system.mapper.DictDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="DictDataMap" type="DictData">
+        <id     column="dict_code"      property="dictCode"     />
+        <result column="create_by"      property="createBy"     />
+        <result column="create_time"    property="createTime"   />
+        <result column="update_by"      property="updateBy"     />
+        <result column="update_time"    property="updateTime"   />
+        <result column="version"        property="version"      />
+        <result column="delete_flag"    property="deleteFlag"   />
+        <result column="dict_type"      property="dictType"     />
+        <result column="dict_label"     property="dictLabel"    />
+        <result column="dict_value"     property="dictValue"    />
+        <result column="remark"         property="remark"       />
+        <result column="sort"           property="sort"         />
+        <result column="default_flag"   property="defaultFlag"  />
+        <result column="status"         property="status"       />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="DictDataVO">
+        create_by, create_time, update_by, update_time, version, delete_flag,
+        dict_code, dict_type, dict_label, dict_value, remark, sort, default_flag, `status`
+    </sql>
+
+    <select id="countDictDataesByType" resultType="int">
+        SELECT COUNT(1)
+        FROM sys_dict_data
+        WHERE dict_type = #{dictType}
+    </select>
+
+    <select id="pageListDictData" resultMap="DictDataMap">
+        SELECT
+        <include refid="DictDataVO"/>
+        FROM sys_dict_data
+        <where>
+            delete_flag = 0
+            AND dict_type = #{dictData.dictType}
+            <if test="dictData.dictLabel != null and dictData.dictLabel != ''">
+                AND (dict_label LIKE CONCAT('%', #{dictData.dictLabel},'%')
+                OR remark LIKE CONCAT('%', #{dictData.dictLabel},'%'))
+            </if>
+            <if test="dictData.status != null">
+                AND `status` = #{dictData.status}
+            </if>
+        </where>
+    </select>
+
+</mapper>
